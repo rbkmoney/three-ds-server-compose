@@ -1,0 +1,7 @@
+version: '2.1'
+services:
+  ds-simple-mock:
+    image: ds-simple-mock:1.0.0
+    build: .
+    ports:
+      - "8081:8081"

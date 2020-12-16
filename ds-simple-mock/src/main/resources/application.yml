@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: @name@
+    description: @description@
+  output:
+    ansi:
+      enabled: always
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  security:
+    flag: false
+  metrics:
+    export:
+      statsd:
+        flavor: etsy
+        enabled: false
+
+info:
+  version: @version@
+  stage: dev
+
+server:
+  port: @server.port@
