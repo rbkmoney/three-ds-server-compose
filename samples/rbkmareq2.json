@@ -1,0 +1,113 @@
+{
+  "messageType": "RBKMONEY_AUTHENTICATION_REQUEST",
+  "messageVersion": "2.1.0",
+  "threeDSCompInd": "Y",
+  "threeDSRequestorAuthenticationInd": "01",
+  "threeDSRequestorAuthenticationInfo": {
+    "threeDSReqAuthMethod": "03",
+    "threeDSReqAuthData": "rtkrcxbcdg"
+  },
+  "threeDSRequestorChallengeInd": "04",
+  "threeDSRequestorDecMaxTime": "00015",
+  "threeDSRequestorDecReqInd": "N",
+  "threeDSRequestorPriorAuthenticationInfo": {
+    "threeDSReqPriorAuthData": "qoeargloeu",
+    "threeDSReqPriorAuthMethod": "04",
+    "threeDSReqPriorRef": "eeb3ff4a-a248-48d8-b4cd-e52046bc7fbc"
+  },
+  "threeDSServerTransID": "5201a899-749a-4300-841b-24a870565b51",
+  "threeRIInd": "05",
+  "acctType": "03",
+  "acquirerBIN": "400551",
+  "acquirerMerchantID": "3586248519",
+  "addrMatch": "Y",
+  "browserAcceptHeader": "qinmrrqtwt",
+  "browserIP": "192.168.0.1",
+  "browserJavaEnabled": true,
+  "browserJavascriptEnabled": false,
+  "browserLanguage": "njuvdt",
+  "browserColorDepth": "4",
+  "browserScreenHeight": "1289",
+  "browserScreenWidth": "7372",
+  "browserTZ": "3138",
+  "browserUserAgent": "ilcytizmjr",
+  "cardExpiryDate": "2412",
+  "purchaseDate": "20200515142258",
+  "acctInfo": {
+    "chAccAgeInd": "04",
+    "chAccChangeInd": "03",
+    "chAccPwChangeInd": "04",
+    "nbPurchaseAccount": "199",
+    "provisionAttemptsDay": "395",
+    "txnActivityDay": "1",
+    "txnActivityYear": "1",
+    "paymentAccInd": "04",
+    "shipAddressUsageInd": "03",
+    "shipNameIndicator": "02",
+    "suspiciousAccActivity": "02"
+  },
+  "acctNumber": "2201010000000000",
+  "acctID": "kkdfnzruts",
+  "billAddrCity": "tjkaonpcnw",
+  "billAddrCountry": "958",
+  "billAddrLine1": "dogwkabiut",
+  "billAddrLine2": "dmdznwphbq",
+  "billAddrLine3": "fsrxwbavtz",
+  "billAddrPostCode": "48651",
+  "billAddrState": "839",
+  "email": "support@rbk.money",
+  "homePhone": {
+    "cc": "35",
+    "subscriber": "59"
+  },
+  "mobilePhone": {
+    "cc": "35",
+    "subscriber": "59"
+  },
+  "cardholderName": "asd",
+  "shipAddrCity": "tjkaonpcnw",
+  "shipAddrCountry": "958",
+  "shipAddrLine1": "dogwkabiut",
+  "shipAddrLine2": "dmdznwphbq",
+  "shipAddrLine3": "fsrxwbavtz",
+  "shipAddrPostCode": "48651",
+  "shipAddrState": "839",
+  "workPhone": {
+    "cc": "35",
+    "subscriber": "59"
+  },
+  "deviceChannel": "02",
+  "purchaseInstalData": "66",
+  "mcc": "6852",
+  "merchantCountryCode": "992",
+  "merchantName": "ozcjccddpo",
+  "merchantRiskIndicator": {
+    "deliveryEmailAddress": "support@rbk.money",
+    "deliveryTimeframe": "01",
+    "giftCardAmount": "7659926414",
+    "giftCardCount": "53",
+    "giftCardCurr": "744",
+    "preOrderPurchaseInd": "02",
+    "reorderItemsInd": "01",
+    "shipIndicator": "02"
+  },
+  "messageCategory": "01",
+  "messageExtension": [
+    {
+      "name": "yudlqxonex",
+      "id": "hkdohdcymz",
+      "criticalityIndicator": false,
+      "data": {
+        "ysnpvgpipa": "nssrskxjge"
+      }
+    }
+  ],
+  "notificationURL": "https://rbk.money/",
+  "purchaseAmount": "44823",
+  "purchaseCurrency": "643",
+  "purchaseExponent": "2",
+  "recurringFrequency": "776",
+  "transType": "03",
+  "whiteListStatus": "Y",
+  "whiteListStatusSource": "01"
+}
