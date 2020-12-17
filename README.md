@@ -1,21 +1,20 @@
 # three-ds-server-compose
-docker-compose for three-ds-server macroservice 
 
 ### Сокращения
 ```
 Directory Server (далее DS)
-3D secure Server — сервис three-ds-server (далее 3DSS)
+3D Secure Server — сервис three-ds-server (далее 3DSS)
 ```
 
-### `3DSS`
+## `3DSS`
 
 `3DSS` имплементирует требование по спецификации `EMVCo` к `3D Secure` взаимодействию, поддерживает только аутентификацию из вебсайта (`Browser-based`)
 
 ![alt text](./readme-resources/flow.jpg "3D Secure Processing Flow - Browser-based")
 
-#### Ручки для запросов
+### Ручки для запросов
 
-##### 3DS Versioning
+#### 3DS Versioning
 
 Для прохождения версионирования, запрос должен быть отправлен в `http://three-ds-server:8080/versioning`, `Content-Type=application/json`
 
@@ -28,7 +27,7 @@ Directory Server (далее DS)
 
 ```
 
-, где `accountNumber=PAN`
+, где `accountNumber = PAN`
 
 Ответ:
 
@@ -44,9 +43,9 @@ Directory Server (далее DS)
 }
 ```
 
-, если код ответа = 200 и существует тело ответа, то значит `PAN` участвует в `3DS 2.0` и может пройти аутентификацию. В остальных случаях вернется соотвествующий HTTP код ошибки
+, если код ответа = 200 и существует тело ответа, то значит `PAN` учавствует в `3DS 2.0` и может пройти аутентификацию. В остальных случаях вернется соотвествующий HTTP код ошибки
 
-##### 3DS Authentication
+#### 3DS Authentication
 
 Для прохождения аутентификации, запрос должен быть отправлен в `http://three-ds-server:8080/sdk`, `Content-Type=application/json`, `"messageType": "RBKMONEY_AUTHENTICATION_REQUEST"`, отдельно примеры запросов находятся по пути `/three-ds-server-compose/samples/`, актуальная модель запроса находятся по пути 
 https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java
@@ -193,6 +192,7 @@ https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java
 
 Актуальная модель сообщения об ошибке находятся по пути https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/emvco/Erro.java
 
+В остальных случаях вернется соотвествующий HTTP код ошибки 
 
 ## Предварительное конфигурирование окружения перед использованием `docker-compose.yml`
 
@@ -242,6 +242,9 @@ docker-compose up -d
 
 После запуска сервис висит на `http://localhost:8081`
 
+Активны 2 ручки
+- `/visa/DS2/authenticate`
+- `/mastercard/DS2/authenticate`
 
 ### **(обязательно)** Настройка домена эквайера (домен `3DSS`)
 
@@ -335,7 +338,7 @@ docker-compose up -d
 ## Тестирование `3DSS`
 
 Для проведения Authentification Flow в соотвествии с спецификацией `EMVCo` в `3DSS` отправляется POST HTTP запрос к `http://three-ds-server:8080/sdk`:
-- Content-Type=application/json
+- `Content-Type=application/json`
 - `"messageType": "RBKMONEY_AUTHENTICATION_REQUEST"`
 - остальные параметры JSON должны быть заполнены в соотвествии с структурой https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java
 
@@ -344,4 +347,3 @@ docker-compose up -d
 `3DSS` (с помощью мок-сервиса `DS`) настроен так, что `"acctNumber": "2201010000000000"` ассоциирует с `mastercard` , `"acctNumber": "4012000000001001"` ассоциирует с `visa`, и отправляет запрос в соотвествующий (`mastercard`/`visa`) `DS` 
 
 ![Demo3](./readme-resources/test.gif?raw=true)
-
