@@ -55,9 +55,9 @@ services:
       - ./three-ds-server/cert:/opt/three-ds-server/cert/:ro
     environment:
       SERVICE_NAME: three-ds-server
-      client.ds.ssl.visa.trust-store: file:/opt/three-ds-server/cert/key.p12
+      client.ds.ssl.visa.trust-store: file:/opt/three-ds-server/cert/visa.p12
       client.ds.ssl.visa.trust-store-password: 76UetirwSjugZh6t
-      client.ds.ssl.mastercard.trust-store: file:/opt/three-ds-server/cert/key.p12
+      client.ds.ssl.mastercard.trust-store: file:/opt/three-ds-server/cert/mastercard.p12
       client.ds.ssl.mastercard.trust-store-password: 76UetirwSjugZh6t
       client.three-ds-server-storage.card-ranges.url: http://three-ds-server-storage:8022/three-ds-server-storage/card-ranges
       client.three-ds-server-storage.card-ranges.timeout: 5000
