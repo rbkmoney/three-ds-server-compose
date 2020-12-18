@@ -1,6 +1,6 @@
 # three-ds-server-compose
 
-Проект с файлом `docker-compose.yml` для использования `RBK.money 3D Secure Server` (сервис `three-ds-server`) в `Docker`
+Проект с файлом `docker-compose.yml` для использования `RBK.money 3D Secure Server` (сервис `rbkmoney/three-ds-server`) в `Docker`
 
 1. [`3DSS`](#3dss)
 2. [Предварительное конфигурирование окружения перед использованием `docker-compose.yml`](#-----docker-composeyml)
@@ -255,7 +255,7 @@ docker-compose up -d
 - `DS mastercard`
 - одновременно со всеми `DS`
 
-1. **(обязательно)** Указать в директории `./three-ds-server/cert` ключи `visa.p12`, `mastercard.p12`, которые используются `3DSS` для соединения с `DS`
+1. **(обязательно)** Указать в директории `/three-ds-server-compose/three-ds-server/cert` ключи `visa.p12`, `mastercard.p12`, которые используются `3DSS` для соединения с `DS`
 
 Ключи будут использоваться параметрами:
 
@@ -335,13 +335,13 @@ docker-compose up -d
 
 ## Тестирование `3DSS`
 
-Для проведения Authentification Flow в соотвествии с спецификацией `EMVCo` в `3DSS` отправляется POST HTTP запрос к `http://three-ds-server:8080/sdk`:
+Для проведения Authentification Flow (в соотвествии с спецификацией `EMVCo`) в `3DSS` отправляется POST HTTP запрос на `http://three-ds-server:8080/sdk`:
 - `Content-Type=application/json`
 - `"messageType": "RBKMONEY_AUTHENTICATION_REQUEST"`
 - остальные параметры JSON должны быть заполнены в соотвествии с структурой https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java
 
 Для теста в `3DSS` посылаются 2 запроса, у одного `"acctNumber": "2201010000000000"`, у второго `"acctNumber": "4012000000001001"`. В данном тесте в качестве сервиса `DS` используется собственный мок-сервис `ds-simple-mock` (описание см. выше)
 
-`3DSS` (с помощью мок-сервиса `DS`) настроен так, что `"acctNumber": "2201010000000000"` ассоциирует с `mastercard` , `"acctNumber": "4012000000001001"` ассоциирует с `visa`, и отправляет запрос в соотвествующий (`mastercard`/`visa`) `DS` 
+`3DSS` (с помощью мок-сервиса `DS`) настроен так, что `"acctNumber": "2201010000000000"` ассоциирует с `mastercard` , `"acctNumber": "4012000000001001"` ассоциирует с `visa`, и отправляет запрос в соотвествующий (`mastercard`/`visa`) `DS` (`PReq/PRes flow`)
 
 ![Demo3](./readme-resources/test.gif?raw=true)
