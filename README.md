@@ -1,18 +1,18 @@
 # three-ds-server-compose
 
-Проект с файлом `docker-compose.yml` для использования RBK.money 3D Secure Server (сервис three-ds-server) в Docker
+Проект с файлом `docker-compose.yml` для использования `RBK.money 3D Secure Server` (сервис `three-ds-server`) в `Docker`
 
 1. [`3DSS`](#3dss)
 2. [Предварительное конфигурирование окружения перед использованием `docker-compose.yml`](#-----docker-composeyml)
-2.1 [Настройка домена совместимости (домен `DS`)](#-----ds)
-2.2 [Настройка домена эквайера (домен `3DSS`)](#-----3dss)
+    1. [Настройка домена совместимости (домен `DS`)](#-----ds)
+    2. [Настройка домена эквайера (домен `3DSS`)](#-----3dss)
 3. [Запуск `3DSS` с использованием `docker-compose.yml`](#-3dss---docker-composeyml)
 4. [Тестирование `3DSS`](#-3dss)
 
 ### Сокращения
 ```
-Directory Server (далее DS)
-3D Secure Server — сервис three-ds-server (далее 3DSS)
+Directory Server=DS
+3D Secure Server=сервис three-ds-server=3DSS
 ```
 
 ## `3DSS`
