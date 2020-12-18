@@ -1,5 +1,14 @@
 # three-ds-server-compose
 
+Проект с файлом `docker-compose.yml` для использования RBK.money 3D Secure Server (сервис three-ds-server) в Docker
+
+1. [`3DSS`](#3dss)
+2. [Предварительное конфигурирование окружения перед использованием `docker-compose.yml`](#-----docker-composeyml)
+2.1 [Настройка домена совместимости (домен `DS`)](#-----ds)
+2.2 [Настройка домена эквайера (домен `3DSS`)](#-----3dss)
+3. [Запуск `3DSS` с использованием `docker-compose.yml`](#-3dss---docker-composeyml)
+4. [Тестирование `3DSS`](#-3dss)
+
 ### Сокращения
 ```
 Directory Server (далее DS)
@@ -16,7 +25,7 @@ Directory Server (далее DS)
 
 #### 3DS Versioning
 
-Для прохождения версионирования, запрос должен быть отправлен в `http://three-ds-server:8080/versioning`, `Content-Type=application/json`
+Для прохождения версионирования, запрос должен быть отправлен на `http://three-ds-server:8080/versioning`, `Content-Type=application/json`
 
 Запрос: 
 
@@ -43,12 +52,15 @@ Directory Server (далее DS)
 }
 ```
 
-, если код ответа = 200 и существует тело ответа, то значит `PAN` учавствует в `3DS 2.0` и может пройти аутентификацию. В остальных случаях вернется соотвествующий HTTP код ошибки
+, если код ответа = 200 и существует тело ответа, то значит `PAN` участвует в `3DS 2.0` и может пройти аутентификацию. В остальных случаях вернется соотвествующий HTTP код ошибки
 
 #### 3DS Authentication
 
-Для прохождения аутентификации, запрос должен быть отправлен в `http://three-ds-server:8080/sdk`, `Content-Type=application/json`, `"messageType": "RBKMONEY_AUTHENTICATION_REQUEST"`, отдельно примеры запросов находятся по пути `/three-ds-server-compose/samples/`, актуальная модель запроса находятся по пути 
-https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java
+Для прохождения аутентификации, запрос должен быть отправлен на `http://three-ds-server:8080/sdk`, `Content-Type=application/json`, `"messageType": "RBKMONEY_AUTHENTICATION_REQUEST"`
+
+Отдельно примеры запросов находятся по пути `/three-ds-server-compose/samples/`
+
+Актуальная модель запроса находятся по пути https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java
 
 Запрос:
 
@@ -57,7 +69,7 @@ https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java
   "messageType": "RBKMONEY_AUTHENTICATION_REQUEST",
   "messageVersion": "2.1.0",
   "threeDSCompInd": "Y",
-...
+.
 }
 ```
 
@@ -142,17 +154,10 @@ https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java
 | Purchase Date & Time                                       | purchaseDate                            |
 | Recurring Expiry                                           | recurringExpiry                         |
 | Recurring Frequency                                        | recurringFrequency                      |
-| SDK App ID                                                 | sdkAppID                                |
-| SDK Encrypted Data                                         | sdkEncData                              |
-| SDK Ephemeral Public Key (Qc)                              | sdkEphemPubKey                          |
-| SDK Maximum Timeout                                        | sdkMaxTimeout                           |
-| SDK Reference Number                                       | sdkReferenceNumber                      |
-| SDK Transaction ID                                         | sdkTransID                              |
 | Transaction Type                                           | transType                               |
 | Whitelist Status                                           | whiteListStatus                         |
 | Whitelist Status Source                                    | whiteListStatusSource                   |
 | 3DS Requestor Challenge Indicator                          | threeDSRequestorChallengeInd            |
-
 
 Актуальная модель ответа находятся по пути https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationResponse.java
 
@@ -196,8 +201,7 @@ https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java
 
 ## Предварительное конфигурирование окружения перед использованием `docker-compose.yml`
 
-`3DSS` является клиентом для `DS`, и использует `DS` для выполенения запросов, обозначенных спецификацей `EMVCo` (ссылка ниже), поэтому для корректной работы `3DSS` необходима настройка обоих доменов
-
+`3DSS` является клиентом для `DS`, и использует `DS` при выполенении запросов, обозначенных спецификацей `EMVCo` (ссылка ниже), поэтому для корректной работы `3DSS` необходима настройка обоих доменов
 
 ### **(обязательно)** Настройка домена совместимости (домен `DS`)
 
@@ -242,10 +246,6 @@ docker-compose up -d
 
 После запуска сервис висит на `http://localhost:8081`
 
-Активны 2 ручки
-- `/visa/DS2/authenticate`
-- `/mastercard/DS2/authenticate`
-
 ### **(обязательно)** Настройка домена эквайера (домен `3DSS`)
 
 #### Опции для настройки сервиса `3DSS` в `docker-compose.yml`
@@ -287,7 +287,6 @@ environment.mastercard.ds-url: http://host.docker.internal:8081/mastercard/DS2/a
 
 При таких значениях параметров `ds-url` `3DSS` будет обращаться к `http://localhost:8081` как к сервису `DS` 
 
-
 3 (не обязательно) Настройка расписания для обновления карточных диапазонов (`PReq/PRes flow`)
 
 Описание `PReq/PRes flow` можно найти в открытой спецификации `EMVCo`:
@@ -309,7 +308,6 @@ rbkmoney-preparation-flow.scheduler.enabled: "false" ("true" по умолчан
 ```
 
 Задать расписание обновления карточных диапазонов:
-
 
 ```yaml
 rbkmoney-preparation-flow.scheduler.schedule.cron: "0 0 * * * ?" (обновлять каждый час — по умолчанию) 
