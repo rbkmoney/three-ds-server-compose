@@ -38,7 +38,7 @@ services:
       client.three-ds-server.url: http://three-ds-server:8080/sdk
       client.three-ds-server.read-timeout: 5000
   three-ds-server:
-    image: rbkmoney/three-ds-server:39c761c183ea255dc97f4543ae4e54654d10a1a5
+    image: rbkmoney/three-ds-server:3014c12050a20e3f32aaec80b956594da9080785
     depends_on:
       three-ds-server-storage:
         condition: service_healthy
