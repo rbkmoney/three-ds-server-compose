@@ -54,6 +54,56 @@ Directory Server=DS
 
 , если код ответа = 200 и существует тело ответа, то значит `PAN` участвует в `3DS 2.0` и может пройти аутентификацию. В остальных случаях вернется соотвествующий HTTP код ошибки
 
+#### 3DS Method
+
+Для сборки HTML шаблона, который необходим при проведении `3DS Method`, можно воспользоваться ручкой `http://three-ds-server:8080/three-ds-method`
+
+Запрос
+```json
+{
+  "threeDsMethodData": {
+    "threeDSServerTransID": "1",
+    "threeDSMethodNotificationURL": "url1"
+  },
+  "threeDsMethodUrl": "url2"
+}
+```
+
+Ответ
+```json
+{
+  "htmlThreeDsMethodData": "...",
+  "threeDsServerTransId": "1"
+}
+```
+
+где `htmlThreeDsMethodData`:
+ 
+```html
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>RBK.money 3D Secure Method Form</h2>
+
+<form id="rbkMoneyThreeDsMethodForm" name="ThreeDsMethodForm"
+      action="url2"
+      method="POST">
+    <input type="hidden"
+           name="threeDSMethodData"
+           value="eyJ0aHJlZURTU2VydmVyVHJhbnNJRCI6IjEiLCJ0aHJlZURTTWV0aG9kTm90aWZpY2F0aW9uVVJMIjoidXJsMSJ9"
+    />
+</form>
+
+<script>
+    document.getElementById("rbkMoneyThreeDsMethodForm").submit()
+</script>
+</body>
+</html>
+```
+
+Обратите внимание, `3DSS` не проводит `3DS Method`, его проводит `3DS Requestor Website` напрямую с `ACS` (согласно спецификации `EMVCo`) для определения параметра `ThreeDsMethodCompletionInd`, который используется при проведении аутентификации. `3DS Method` можно провести без использования `3DSS`, самостоятельно собрав нужный шаблон, но `3DSS` может облегчить часть работы
+
 #### 3DS Authentication
 
 Для прохождения аутентификации, запрос должен быть отправлен на `http://three-ds-server:8080/sdk`, `Content-Type=application/json`, `"messageType": "RBKMONEY_AUTHENTICATION_REQUEST"`
