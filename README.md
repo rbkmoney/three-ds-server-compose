@@ -317,8 +317,8 @@ client.ds.ssl.mastercard.trust-store: file:/opt/three-ds-server/cert/mastercard.
 Указать пароли для ключей:
  
 ```yaml
-client.ds.ssl.visa.trust-store-password: 76UetirwSjugZh6t
-client.ds.ssl.mastercard.trust-store-password: 76UetirwSjugZh6t
+client.ds.ssl.visa.trust-store-password: {{password}}
+client.ds.ssl.mastercard.trust-store-password: {{password}}
 ```
 
 Изменить (при необходимости) volume
