@@ -22,26 +22,6 @@ public class JsonMapper {
     }
 
     @SneakyThrows
-    public <T> T readValue(String src, Class<T> valueType) {
-        return objectMapper.readValue(src, valueType);
-    }
-
-    @SneakyThrows
-    public <T> T readValue(byte[] src, Class<T> valueType) {
-        return objectMapper.readValue(src, valueType);
-    }
-
-    @SneakyThrows
-    public byte[] writeValueAsBytes(String json) {
-        return objectMapper.writeValueAsBytes(json);
-    }
-
-    @SneakyThrows
-    public String writeValueAsString(Object o) {
-        return objectMapper.writeValueAsString(o);
-    }
-
-    @SneakyThrows
     public String readStringFromFile(String fullPath) {
         return IOUtils.toString(
                 resourceLoader.getResource("classpath:__files/" + fullPath).getInputStream(),

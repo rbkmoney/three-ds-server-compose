@@ -1,7 +1,7 @@
 spring:
   application:
-    name: @name@
-    description: @description@
+    name: '@name@'
+    description: '@description@'
   output:
     ansi:
       enabled: always
@@ -19,8 +19,8 @@ management:
         enabled: false
 
 info:
-  version: @version@
+  version: '@version@'
   stage: dev
 
 server:
-  port: @server.port@
+  port: '@server.port@'
