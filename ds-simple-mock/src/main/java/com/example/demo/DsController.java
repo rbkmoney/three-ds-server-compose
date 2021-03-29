@@ -36,6 +36,14 @@ public class DsController {
         return ds(message, pres, ares);
     }
 
+    @PostMapping("/nspk/DS2/authenticate")
+    @SneakyThrows
+    public ResponseEntity<Object> nspk(@RequestBody Message message) {
+        String pres = "mir/1-8/pres.json";
+        String ares = "mir/1-1/ares.json";
+        return ds(message, pres, ares);
+    }
+
     private ResponseEntity<Object> ds(@RequestBody Message message, String pres, String ares) {
         log.info("start {}", message);
         if (message instanceof PReq) {

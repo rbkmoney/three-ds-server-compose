@@ -4,10 +4,8 @@
 FROM maven:3.6.0-jdk-11-slim AS build
 COPY src /home/ds-simple-mock/src
 COPY pom.xml /home/ds-simple-mock
-COPY settings.xml /home/ds-simple-mock
 ENV POM_XML=/home/ds-simple-mock/pom.xml
-ENV SETTINGS_XML=/home/ds-simple-mock/settings.xml
-RUN mvn -f $POM_XML --settings $SETTINGS_XML clean package -P rbkmoney
+RUN mvn -f $POM_XML clean package
 
 #
 # Package stage
