@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: '@name@'
+    description: '@description@'
+  output:
+    ansi:
+      enabled: always
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  security:
+    flag: false
+  metrics:
+    export:
+      statsd:
+        flavor: etsy
+        enabled: false
+
+info:
+  version: '@version@'
+  stage: dev
+
+server:
+  port: '@server.port@'
+
+preparation-flow:
+  scheduler:
+    enabled: false
+    schedule:
+      cron: "0 0 * * * ?"
+  ds-provider:
+    mastercard:
+      enabled: true
+      message-version: "2.1.0"
+    visa:
+      enabled: false
+      message-version: "2.1.0"
+    mir:
+      enabled: false
+      message-version: "2.1.0"
+
+client:
+  three-ds-server-storage:
+    url: http://localhost:8022/three-ds-server-storage/rest/preparation-flow
+    read-timeout: 5000
+    connect-timeout: 5000
