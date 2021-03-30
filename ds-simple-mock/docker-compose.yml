@@ -5,3 +5,5 @@ services:
     build: .
     ports:
       - "8081:8081"
+    container_name: ds-simple-mock
+    hostname: ds-simple-mock
