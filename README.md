@@ -1,6 +1,6 @@
 # three-ds-server-compose
 
-Проект с файлом `docker-compose.yml` для использования `RBK.money 3D Secure Server` (сервис `rbkmoney/three-ds-server`) в `Docker`
+Описание файла `docker-compose.yml` для использования [RBK.money 3D Secure Server](https://github.com/rbkmoney/three-ds-server) в [Docker](https://hub.docker.com/r/rbkmoney/three-ds-server)
 
 1. [`3DSS`](#3dss)
 2. [Предварительное конфигурирование окружения перед использованием `docker-compose.yml`](#предварительное-конфигурирование-окружения-перед-использованием-docker-composeyml)
@@ -21,7 +21,7 @@ Directory Server=DS
 
 ![alt text](./readme-resources/flow.jpg "3D Secure Processing Flow - Browser-based")
 
-### Ручки для запросов
+### Endpoints
 
 #### 3DS Versioning
 
@@ -110,7 +110,8 @@ Directory Server=DS
 
 Отдельно примеры запросов находятся по пути `/three-ds-server-compose/samples/`
 
-Актуальная модель запроса находятся по пути https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java
+Актуальная модель запроса описывается файлом [RBKMoneyAuthenticationRequest.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java)
+
 
 Запрос:
 
@@ -119,7 +120,7 @@ Directory Server=DS
   "messageType": "RBKMONEY_AUTHENTICATION_REQUEST",
   "messageVersion": "2.1.0",
   "threeDSCompInd": "Y",
-.
+...
 }
 ```
 
