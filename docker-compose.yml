@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3.5'
 services:
   postgresql:
     image: postgres:9.6
@@ -9,6 +9,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - three-ds-server-network
     environment:
       SERVICE_NAME: postgres
       POSTGRES_USER: postgres
@@ -21,13 +23,13 @@ services:
         condition: service_healthy
     container_name: three-ds-server-storage
     hostname: three-ds-server-storage
-    ports:
-      - "8022:8022"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://three-ds-server-storage:8023/actuator/health || exit 1"]
       interval: 20s
       timeout: 5s
       retries: 5
+    networks:
+      - three-ds-server-network
     environment:
       SERVICE_NAME: three-ds-server-storage
       spring.datasource.url: jdbc:postgresql://postgresql:5432/three_ds_server_storage
@@ -54,6 +56,8 @@ services:
       interval: 20s
       timeout: 5s
       retries: 5
+    networks:
+      - three-ds-server-network
     volumes:
       - ./three-ds-server/cert:/opt/three-ds-server/cert/:ro
     environment:
@@ -74,24 +78,28 @@ services:
       environment.message.message-version: 2.2.0
       environment.message.valid-message-versions[0]: 2.1.0
       environment.message.valid-message-versions[1]: 2.2.0
-      environment.visa.ds-url: http://host.docker.internal:8081/visa/DS2/authenticate
+      environment.visa.ds-url: http://ds:8081/visa/DS2/authenticate
       environment.visa.three-ds-requestor-url: https://rbk.money/
       environment.visa.three-ds-requestor-prefix: visa
       environment.visa.three-ds-server-url: https://visa.3ds.rbk.money/ds
       environment.visa.three-ds-server-ref-number: visa
       environment.visa.three-ds-server-operator-id: visa
       environment.visa.three-ds-server-read-timeout: 10000
-      environment.mastercard.ds-url: http://host.docker.internal:8081/mastercard/DS2/authenticate
+      environment.mastercard.ds-url: http://ds:8081/mastercard/DS2/authenticate
       environment.mastercard.three-ds-requestor-url: https://rbk.money/
       environment.mastercard.three-ds-requestor-prefix: mastercard
       environment.mastercard.three-ds-server-url: https://mastercard.3ds.rbk.money/ds
       environment.mastercard.three-ds-server-ref-number: mastercard
       environment.mastercard.three-ds-server-operator-id: mastercard
       environment.mastercard.three-ds-server-read-timeout: 10000
-      environment.mir.ds-url: http://host.docker.internal:8081/nspk/DS2/authenticate
+      environment.mir.ds-url: http://ds:8081/nspk/DS2/authenticate
       environment.mir.three-ds-requestor-url: https://rbk.money/
       environment.mir.three-ds-requestor-prefix: nspk
       environment.mir.three-ds-server-url: https://nspk.3ds.rbk.money/ds
       environment.mir.three-ds-server-ref-number: nspk
       environment.mir.three-ds-server-operator-id: nspk
       environment.mir.three-ds-server-read-timeout: 10000
+
+networks:
+  three-ds-server-network:
+    name: three-ds-network
