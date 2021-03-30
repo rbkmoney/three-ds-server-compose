@@ -15,14 +15,16 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: three_ds_server_storage
   three-ds-server-storage:
-    image: index.docker.io/rbkmoney/three-ds-server-storage:41e14d6d4ee1f675fa63263f22c3cf261d656a23
+    image: rbkmoney/three-ds-server-storage
     depends_on:
       postgresql:
         condition: service_healthy
     container_name: three-ds-server-storage
     hostname: three-ds-server-storage
+    ports:
+      - "8022:8022"
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://three-ds-server-storage:8022/actuator/health || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://three-ds-server-storage:8023/actuator/health || exit 1"]
       interval: 20s
       timeout: 5s
       retries: 5
@@ -37,8 +39,9 @@ services:
       spring.flyway.schemas: three_ds_server_storage
       client.three-ds-server.url: http://three-ds-server:8080/sdk
       client.three-ds-server.read-timeout: 5000
+      rest-endpoint.enabled: "true"
   three-ds-server:
-    image: rbkmoney/three-ds-server:3014c12050a20e3f32aaec80b956594da9080785
+    image: rbkmoney/three-ds-server
     depends_on:
       three-ds-server-storage:
         condition: service_healthy
@@ -47,7 +50,7 @@ services:
     ports:
       - "8080:8080"
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://three-ds-server:8080/actuator/health || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://three-ds-server:8023/actuator/health || exit 1"]
       interval: 20s
       timeout: 5s
       retries: 5
@@ -55,24 +58,19 @@ services:
       - ./three-ds-server/cert:/opt/three-ds-server/cert/:ro
     environment:
       SERVICE_NAME: three-ds-server
-      client.ds.ssl.visa.trust-store: file:/opt/three-ds-server/cert/visa.p12
+      client.ds.ssl.visa.trust-store: file:/opt/three-ds-server/cert/test.p12
       client.ds.ssl.visa.trust-store-password: 76UetirwSjugZh6t
-      client.ds.ssl.mastercard.trust-store: file:/opt/three-ds-server/cert/mastercard.p12
+      client.ds.ssl.mastercard.trust-store: file:/opt/three-ds-server/cert/test.p12
       client.ds.ssl.mastercard.trust-store-password: 76UetirwSjugZh6t
+      client.ds.ssl.mir.trust-store: file:/opt/three-ds-server/cert/test.p12
+      client.ds.ssl.mir.trust-store-password: 76UetirwSjugZh6t
       client.three-ds-server-storage.card-ranges.url: http://three-ds-server-storage:8022/three-ds-server-storage/card-ranges
       client.three-ds-server-storage.card-ranges.timeout: 5000
       client.three-ds-server-storage.challenge-flow-transaction-info.url: http://three-ds-server-storage:8022/three-ds-server-storage/challenge-flow-transaction-info
       client.three-ds-server-storage.challenge-flow-transaction-info.timeout: 5000
       storage.challenge-flow-transaction-info.size: 1000
       platform.mode: RBK_MONEY_PLATFORM
-      rbkmoney-preparation-flow.scheduler.enabled: "true"
-      rbkmoney-preparation-flow.scheduler.schedule.executor-url: http://three-ds-server-storage:8022/three-ds-server-storage/preparation-flow
-      rbkmoney-preparation-flow.scheduler.schedule.cron: "0 0 * * * ?"
-      rbkmoney-preparation-flow.scheduler.schedule.timeout: 5000
-      rbkmoney-preparation-flow.scheduler.ds-provider.mastercard.enabled: "true"
-      rbkmoney-preparation-flow.scheduler.ds-provider.mastercard.message-version: 2.1.0
-      rbkmoney-preparation-flow.scheduler.ds-provider.visa.enabled: "true"
-      rbkmoney-preparation-flow.scheduler.ds-provider.visa.message-version: 2.1.0
+      rbkmoney-preparation-flow.scheduler.enabled: "false"
       environment.message.message-version: 2.2.0
       environment.message.valid-message-versions[0]: 2.1.0
       environment.message.valid-message-versions[1]: 2.2.0
@@ -90,3 +88,10 @@ services:
       environment.mastercard.three-ds-server-ref-number: mastercard
       environment.mastercard.three-ds-server-operator-id: mastercard
       environment.mastercard.three-ds-server-read-timeout: 10000
+      environment.mir.ds-url: http://host.docker.internal:8081/nspk/DS2/authenticate
+      environment.mir.three-ds-requestor-url: https://rbk.money/
+      environment.mir.three-ds-requestor-prefix: nspk
+      environment.mir.three-ds-server-url: https://nspk.3ds.rbk.money/ds
+      environment.mir.three-ds-server-ref-number: nspk
+      environment.mir.three-ds-server-operator-id: nspk
+      environment.mir.three-ds-server-read-timeout: 10000
