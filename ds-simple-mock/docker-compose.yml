@@ -1,9 +1,14 @@
-version: '2.1'
+version: '3.5'
 services:
-  ds-simple-mock:
+  ds:
     image: ds-simple-mock:1.0.0
     build: .
-    ports:
-      - "8081:8081"
-    container_name: ds-simple-mock
-    hostname: ds-simple-mock
+    container_name: ds
+    hostname: ds
+    networks:
+      - ds-network
+
+networks:
+  ds-network:
+    external:
+      name: three-ds-network

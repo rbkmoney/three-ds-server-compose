@@ -1,10 +1,12 @@
-version: '2.1'
+version: '3.5'
 services:
-  pseudo-schedulator:
+  schedulator:
     image: pseudo-schedulator:1.0.0
     build: .
-    container_name: pseudo-schedulator
-    hostname: pseudo-schedulator
+    container_name: schedulator
+    hostname: schedulator
+    networks:
+      - schedulator-network
     environment:
       preparation-flow.scheduler.enabled: "false"
       preparation-flow.scheduler.schedule.cron: "0 0 * * * ?"
@@ -14,6 +16,11 @@ services:
       preparation-flow.ds-provider.visa.message-version: 2.1.0
       preparation-flow.ds-provider.mir.enabled: "true"
       preparation-flow.ds-provider.mir.message-version: 2.1.0
-      client.three-ds-server-storage.url: http://host.docker.internal:8022/three-ds-server-storage/rest/preparation-flow
+      client.three-ds-server-storage.url: http://three-ds-server-storage:8022/three-ds-server-storage/rest/preparation-flow
       client.three-ds-server-storage.read-timeout: 5000
       client.three-ds-server-storage.connect-timeout: 5000
+
+networks:
+  schedulator-network:
+    external:
+      name: three-ds-network
