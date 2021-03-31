@@ -2,13 +2,6 @@
 
 Описание файла `docker-compose.yml` для использования [RBK.money 3D Secure Server](https://github.com/rbkmoney/three-ds-server) в [Docker](https://hub.docker.com/r/rbkmoney/three-ds-server)
 
-1. [`3DSS`](#3dss)
-2. [Предварительное конфигурирование окружения перед использованием `docker-compose.yml`](#предварительное-конфигурирование-окружения-перед-использованием-docker-composeyml)
-    1. [Настройка домена совместимости (домен `DS`)](#обязательно-настройка-домена-совместимости-домен-ds)
-    2. [Настройка домена эквайера (домен `3DSS`)](#обязательно-настройка-домена-эквайера-домен-3dss)
-3. [Запуск `3DSS` с использованием `docker-compose.yml`](#запуск-3dss-с-использованием-docker-composeyml)
-4. [Тестирование `3DSS`](#тестирование-3dss)
-
 ### Сокращения
 ```
 Directory Server=DS
