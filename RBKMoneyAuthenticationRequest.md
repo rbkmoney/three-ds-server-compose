@@ -1,6 +1,6 @@
 # RBKMoneyAuthenticationRequest
 
-Актуальная `java-файл` модели для `POST HTTP json-запроса` тут [RBKMoneyAuthenticationRequest.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java)
+Актуальный `java-файл` модели для `POST HTTP json-запроса` тут [RBKMoneyAuthenticationRequest.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java)
 
 # Описание полей
 
