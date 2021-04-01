@@ -50,6 +50,8 @@ docker-compose up -d
 
 В этом репозитории находится [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md), который может быть использован в заглушки для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md)
 
+Подробнее — [здесь](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md)
+
 ### Настройка домена эквайера (домен `3DSS`)
 
 На данный момент сервис поддерживает обработку 3 провайдеров `{providerId}` — `visa`, `mastercard`, `mir`
