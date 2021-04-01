@@ -22,14 +22,17 @@ Cборка и запуск [сервиса](https://github.com/rbkmoney/three-d
 
 Сервис отправляет запрос по собственному расписанию крона в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose) с целью инициализации [`3DS Preparation Flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf)
 
-Пример запроса
+Пример 
 ```
-POST http://three-ds-server-storage:8022/three-ds-server-storage/rest/preparation-flow
+-> Request [POST] http://three-ds-server-storage:8022/three-ds-server-storage/rest/preparation-flow
 
 {
   "providerId": "visa",
   "messageVersion": "2.1.0"
 }
+
+<- Response [POST] http://three-ds-server-storage:8022/three-ds-server-storage/rest/preparation-flow
+HTTP 200 OK
 ```
 
 Пример расписания крона
