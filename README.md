@@ -24,32 +24,25 @@ docker-compose up -d
 2. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/docker-compose.yml) [ds-simple-mock](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/README.md) (пример сервиса, который может быть использован в качестве заглушки для обработки [`PReq` && `AReq` запросов](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в DS от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md))
 3. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/docker-compose.yml) [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md) (пример сервиса, который может быть использован в качестве заглушки для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md))
 
-## `3DSS`
+## Описание
 
 `3DSS` имплементирует требование по спецификации `EMVCo` к `3D Secure` взаимодействию, поддерживает только аутентификацию из вебсайта (`Browser-based`)
 
 ![alt text](./readme-resources/flow.jpg "3D Secure Processing Flow - Browser-based")
 
-### Endpoints
+### 3DS Versioning
 
-#### 3DS Versioning
+Перед прохождением `3DS Authentification Flow` `3DS Requestor` должен версионировать `PAN` плательщика. Результат версионирования подтверждает, что данный `PAN` является участником `3DS 2.0` и имеет право пройти аутентитфикацию `3DS Authentification Flow`, в протитвном случае результатом версионирования будет `HTTP 404 NOT FOUND`
 
-Для прохождения версионирования, запрос должен быть отправлен на `http://three-ds-server:8080/versioning`, `Content-Type=application/json`
-
-Запрос: 
-
-```json
+Пример
+```
+-> Request [POST] http://three-ds-server:8080/versioning
+Content-Type=application/json
 {
   "accountNumber": "1234567890"
 }
 
-```
-
-, где `accountNumber = PAN`
-
-Ответ:
-
-```json
+<- Response [POST] http://three-ds-server:8080/versioning
 {
   "threeDsServerTransId": "bc9f0b90-1041-47f0-94df-d692170ea0d7",
   "dsProviderId": "visa",
@@ -60,15 +53,25 @@ docker-compose up -d
   "threeDsMethodUrl": "url"
 }
 ```
+```
+-> Request [POST] http://three-ds-server:8080/versioning
+Content-Type=application/json
+{
+  "accountNumber": "9234567890"
+}
 
-, если код ответа = 200 и существует тело ответа, то значит `PAN` участвует в `3DS 2.0` и может пройти аутентификацию. В остальных случаях вернется соотвествующий HTTP код ошибки
+<- Response [POST] http://three-ds-server:8080/versioning
+HTTP 404 NOT FOUND
+```
 
-#### 3DS Method
+### 3DS Method
 
-Для сборки HTML шаблона, который необходим при проведении `3DS Method`, можно воспользоваться ручкой `http://three-ds-server:8080/three-ds-method`
+Дополнительный эндпоинт, который не обязателен для использования в `3DS Requestor`, используется для сборки HTML шаблона, который необходим при проведении `3DS Method` между `3DS Requestor` и [`ACS`]((https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf))
 
-Запрос
-```json
+Пример
+```
+-> Request [POST] http://three-ds-server:8080/three-ds-method
+Content-Type=application/json
 {
   "threeDsMethodData": {
     "threeDSServerTransID": "1",
@@ -76,17 +79,14 @@ docker-compose up -d
   },
   "threeDsMethodUrl": "url2"
 }
-```
 
-Ответ
-```json
+<- Response [POST] http://three-ds-server:8080/three-ds-method
 {
   "htmlThreeDsMethodData": "...",
   "threeDsServerTransId": "1"
 }
 ```
-
-где `htmlThreeDsMethodData`:
+Где `htmlThreeDsMethodData`
  
 ```html
 <!DOCTYPE html>
@@ -111,7 +111,11 @@ docker-compose up -d
 </html>
 ```
 
-Обратите внимание, `3DSS` не проводит `3DS Method`, его проводит `3DS Requestor Website` напрямую с `ACS` (согласно спецификации `EMVCo`) для определения параметра `ThreeDsMethodCompletionInd`, который используется при проведении аутентификации. `3DS Method` можно провести без использования `3DSS`, самостоятельно собрав нужный шаблон, но `3DSS` может облегчить часть работы
+**Обратите внимание**, `3DSS` не проводит `3DS Method`, его проводит `3DS Requestor` напрямую с [`ACS`]((https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf))
+
+Конечным результатом проведения `3DS Method` является определение параметра [`ThreeDsMethodCompletionInd`](https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java#L46), который используется при проведении аутентификации. 
+
+`3DS Method` можно провести без использования `3DSS`, самостоятельно собрав подобный шаблон `htmlThreeDsMethodData`, описанный здесь
 
 #### 3DS Authentication Flow
 
