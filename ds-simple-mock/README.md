@@ -8,7 +8,7 @@
 docker-compose up -d
 ```
 
-![Demo1](./readme-resources/1_full.gif?raw=true)
+![Demo1](../readme-resources/1_full.gif?raw=true)
 
 Cборка и запуск [сервиса](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/pom.xml) полностью автоматизированы и производится внутри докера, дополнительно локально (`maven`, `openjdk11` и тд) ничего устанавливать не нужно. Сборка [сервиса](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/pom.xml) описана в [`Dockerfile`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/Dockerfile), запуск описан в [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/docker-compose.yml)
 
