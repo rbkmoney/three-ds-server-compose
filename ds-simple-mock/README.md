@@ -26,7 +26,7 @@ Cборка и запуск [сервиса](https://github.com/rbkmoney/three-d
 
 На данный момент сервис поддерживает обработку 3 провайдеров `{providerId}` — `visa`, `mastercard`, `mir`
 
-`3DS Authentification Flow`
+Пример `3DS Authentification Flow`
 ```
 -> Request [POST] /{providerId}/DS2/authenticate
 {
@@ -42,7 +42,7 @@ Cборка и запуск [сервиса](https://github.com/rbkmoney/three-d
   ...
 }
 ```
-`3DS Preparation Flow`
+Пример `3DS Preparation Flow`
 ```
 -> Request [POST] /{providerId}/DS2/authenticate
 {
