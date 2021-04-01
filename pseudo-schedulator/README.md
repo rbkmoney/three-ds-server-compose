@@ -62,6 +62,7 @@ preparation-flow.scheduler.schedule.cron: "0 0 * * * ?"
 ```
 
 Настройка инициализации отдельный пройвадеров, при `mastercard.enabled: "false"` инициализация [`PREQ/PRES flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) будет активна только для `visa`, `mir`, для `mastercard` выключена
+
 Параметр `message-version: 2.1.0` настривает версию сообщения `PReq`, возможную в рамках спецификации `EMVCo`
 ```json
 preparation-flow.ds-provider.mastercard.enabled: "true"
