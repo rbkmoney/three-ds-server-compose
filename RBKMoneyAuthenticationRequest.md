@@ -87,3 +87,7 @@
 | Whitelist Status                                           | whiteListStatus                         |
 | Whitelist Status Source                                    | whiteListStatusSource                   |
 | 3DS Requestor Challenge Indicator                          | threeDSRequestorChallengeInd            |
+
+# Примеры
+
+Отдельно примеры запросов находятся в папке [samples](https://github.com/rbkmoney/three-ds-server-compose/tree/master/samples)
