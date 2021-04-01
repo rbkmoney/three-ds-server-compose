@@ -1,6 +1,6 @@
 # RBKMoneyAuthenticationRequest
 
-Актуальный `java-файл` модели для `POST HTTP json-запроса` тут [RBKMoneyAuthenticationRequest.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java)
+Актуальная модель в виде `java-файла` для выполнения `POST HTTP json-запроса` в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose)) тут [RBKMoneyAuthenticationRequest.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java)
 
 # Примеры
 
