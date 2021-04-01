@@ -16,7 +16,7 @@ docker-compose up -d
 
 ![Demo2](./readme-resources/2_full.gif?raw=true)
 
-Запуск [макросервиса](https://github.com/rbkmoney/three-ds-server/blob/master/pom.xml) полностью автоматизирован и производится внутри докера, образ скачивается напрямую из [репозитория `rbkmoney` на `Docker Hub`](https://hub.docker.com/r/rbkmoney/three-ds-server).
+Запуск [макросервиса](https://github.com/rbkmoney/three-ds-server/blob/master/pom.xml) полностью автоматизирован и производится внутри докера, образ скачивается напрямую из [репозитория `rbkmoney` на `Docker Hub`](https://hub.docker.com/r/rbkmoney/three-ds-server)
 
 **Обращаем внимание**, для корректного демо [RBK.money 3D Secure Server](https://github.com/rbkmoney/three-ds-server) порядок запуска:
 
@@ -48,7 +48,7 @@ docker-compose up -d
 
 Более детальное описание процесса — [здесь](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) -> `5.6 PReq/PRes Message Handling Requirements (page 119)`
 
-В этом репозитории находится [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md), который может быть использован в заглушки для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md))
+В этом репозитории находится [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md), который может быть использован в заглушки для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md)
 
 ### Настройка домена эквайера (домен `3DSS`)
 
@@ -83,11 +83,11 @@ environment.{providerId}.ds-url: http://ds:8081/{providerId}/DS2/authenticate
 
 3) Настройка расписания для обновления карточных диапазонов [`3DS Preparation Flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) 
 
-В этом репозитории находится [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md), который может быть использован в заглушки для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md)) 
+В этом репозитории находится [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md), который может быть использован в заглушки для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md)
 
 **Лучше пишите собственную импементацию**
 
-Поэтому стандартная имплементация через [rbkmoney-schedulator](https://github.com/rbkmoney/schedulator) **выключена** (параметр `rbkmoney-preparation-flow.scheduler.enabled: "false"`) (данный сервис тянет за собой каскад других rbkmoney сервисов, поэтому это выходит за рамки данной демонстрации)
+Cтандартная имплементация через [rbkmoney-schedulator](https://github.com/rbkmoney/schedulator) **выключена** (параметр `rbkmoney-preparation-flow.scheduler.enabled: "false"`) (данный сервис тянет за собой каскад других rbkmoney сервисов, поэтому это выходит за рамки данной демонстрации)
 
 ## Тестирование `3DS Authentification Flow`
 
@@ -95,6 +95,6 @@ environment.{providerId}.ds-url: http://ds:8081/{providerId}/DS2/authenticate
 
 В данном тесте в качестве сервиса `DS` используется собственный мок-сервис `ds-simple-mock`
 
-`3DSS` (с помощью мок-сервиса `DS`) настроен так, что `"acctNumber": "2201010000000000"` ассоциирует с `mastercard` , `"acctNumber": "4012000000001001"` ассоциирует с `visa`, и отправляет запрос в соотвествующий (`mastercard`/`visa`) `DS` (`PReq/PRes flow`)  (`mir` также поддерживается для запросов)
+`3DSS` (с помощью мок-сервиса `DS`) настроен так, что `"acctNumber": "2201010000000000"` ассоциирует с `mastercard` , `"acctNumber": "4012000000001001"` ассоциирует с `visa`, и отправляет запрос в соотвествующий `DS` (`mir` также поддерживается для запросов)
 
 ![Demo3](./readme-resources/test.gif?raw=true)
