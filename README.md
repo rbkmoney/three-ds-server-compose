@@ -28,7 +28,7 @@ docker-compose up -d
 
 `3DSS` имплементирует требование по спецификации `EMVCo` к `3D Secure` взаимодействию, поддерживает только аутентификацию из вебсайта (`Browser-based`)
 
-Подробнее — [здесь](https://github.com/rbkmoney/three-ds-server-compose/blob/master/3DSS detailed Description.md)
+Подробнее — [здесь](https://github.com/rbkmoney/three-ds-server-compose/blob/master/3DSS%20detailed%20Description.md)
 
 ## Конфигурация
 
