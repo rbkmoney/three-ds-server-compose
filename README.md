@@ -1,12 +1,28 @@
 # three-ds-server-compose
 
-Описание файла `docker-compose.yml` для использования [RBK.money 3D Secure Server](https://github.com/rbkmoney/three-ds-server) в [Docker](https://hub.docker.com/r/rbkmoney/three-ds-server)
+Репозиторий с макросервисом [RBK.money 3D Secure Server](https://github.com/rbkmoney/three-ds-server) для запуска внутри [Docker](https://hub.docker.com/r/rbkmoney/three-ds-server)
 
-### Сокращения
+## Сокращения
 ```
-Directory Server=DS
-3D Secure Server=three-ds-server=3DSS
+Directory Server = DS
+3D Secure Server = 3DSS
 ```
+
+## Использование
+
+```bash
+docker-compose up -d
+```
+
+![Demo2](./readme-resources/2_full.gif?raw=true)
+
+Запуск [макросервиса](https://github.com/rbkmoney/three-ds-server/blob/master/pom.xml) полностью автоматизирован и производится внутри докера, образ скачивается напрямую из [репозитория `rbkmoney` на `Docker Hub`](https://hub.docker.com/r/rbkmoney/three-ds-server).
+
+**Обращаем внимание**, для корректного демо [RBK.money 3D Secure Server](https://github.com/rbkmoney/three-ds-server) порядок запуска:
+
+1. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docker-compose.yml) [three-ds-server macroservice](https://github.com/rbkmoney/three-ds-server-compose) (сам макросервис 3DSS)
+2. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/docker-compose.yml) [ds-simple-mock](https://github.com/rbkmoney/three-ds-server-compose/tree/master/ds-simple-mock) (пример сервиса, который может быть использован в качестве заглушки для обработки [`PReq` && `AReq` запросов](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в DS от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose))
+3. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/docker-compose.yml) [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/tree/master/pseudo-schedulator) (пример сервиса, который может быть использован в качестве заглушки для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose))
 
 ## `3DSS`
 
@@ -103,7 +119,7 @@ Directory Server=DS
 
 Описание модели запроса при прохождении `3DS Authentification Flow` здесь — [`RBKMoneyAuthenticationRequest`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/RBKMoneyAuthenticationRequest.md)
 
-Актуальная модель в виде `java-файла` для получения `POST HTTP json-ответа` в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose)) тут [RBKMoneyAuthenticationRequest.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationResponse.java)
+Актуальная модель в виде `java-файла` для получения `POST HTTP json-ответа` в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose) тут [RBKMoneyAuthenticationRequest.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationResponse.java)
 
 Актуальная модель ответа находятся по пути https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationResponse.java
 
