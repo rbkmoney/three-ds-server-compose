@@ -20,148 +20,17 @@ docker-compose up -d
 
 **Обращаем внимание**, для корректного демо [RBK.money 3D Secure Server](https://github.com/rbkmoney/three-ds-server) порядок запуска:
 
-1. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docker-compose.yml) [three-ds-server macroservice](https://github.com/rbkmoney/three-ds-server-compose) (сам макросервис 3DSS)
-2. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/docker-compose.yml) [ds-simple-mock](https://github.com/rbkmoney/three-ds-server-compose/tree/master/ds-simple-mock) (пример сервиса, который может быть использован в качестве заглушки для обработки [`PReq` && `AReq` запросов](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в DS от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose))
-3. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/docker-compose.yml) [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/tree/master/pseudo-schedulator) (пример сервиса, который может быть использован в качестве заглушки для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose))
+1. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docker-compose.yml) [three-ds-server macroservice](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md) (сам макросервис 3DSS)
+2. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/docker-compose.yml) [ds-simple-mock](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/README.md) (пример сервиса, который может быть использован в качестве заглушки для обработки [`PReq` && `AReq` запросов](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в DS от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md))
+3. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/docker-compose.yml) [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md) (пример сервиса, который может быть использован в качестве заглушки для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md))
 
-## `3DSS`
+## Описание
 
 `3DSS` имплементирует требование по спецификации `EMVCo` к `3D Secure` взаимодействию, поддерживает только аутентификацию из вебсайта (`Browser-based`)
 
-![alt text](./readme-resources/flow.jpg "3D Secure Processing Flow - Browser-based")
+Подробнее — [здесь](https://github.com/rbkmoney/three-ds-server-compose/blob/master/3DSS detailed Description.md)
 
-### Endpoints
-
-#### 3DS Versioning
-
-Для прохождения версионирования, запрос должен быть отправлен на `http://three-ds-server:8080/versioning`, `Content-Type=application/json`
-
-Запрос: 
-
-```json
-{
-  "accountNumber": "1234567890"
-}
-
-```
-
-, где `accountNumber = PAN`
-
-Ответ:
-
-```json
-{
-  "threeDsServerTransId": "bc9f0b90-1041-47f0-94df-d692170ea0d7",
-  "dsProviderId": "visa",
-  "acsStartProtocolVersion": "2.1.0",
-  "acsEndProtocolVersion": "2.1.0",
-  "dsStartProtocolVersion": "2.1.0",
-  "dsEndProtocolVersion": "2.1.0",
-  "threeDsMethodUrl": "url"
-}
-```
-
-, если код ответа = 200 и существует тело ответа, то значит `PAN` участвует в `3DS 2.0` и может пройти аутентификацию. В остальных случаях вернется соотвествующий HTTP код ошибки
-
-#### 3DS Method
-
-Для сборки HTML шаблона, который необходим при проведении `3DS Method`, можно воспользоваться ручкой `http://three-ds-server:8080/three-ds-method`
-
-Запрос
-```json
-{
-  "threeDsMethodData": {
-    "threeDSServerTransID": "1",
-    "threeDSMethodNotificationURL": "url1"
-  },
-  "threeDsMethodUrl": "url2"
-}
-```
-
-Ответ
-```json
-{
-  "htmlThreeDsMethodData": "...",
-  "threeDsServerTransId": "1"
-}
-```
-
-где `htmlThreeDsMethodData`:
- 
-```html
-<!DOCTYPE html>
-<html>
-<body>
-
-<h2>RBK.money 3D Secure Method Form</h2>
-
-<form id="rbkMoneyThreeDsMethodForm" name="ThreeDsMethodForm"
-      action="url2"
-      method="POST">
-    <input type="hidden"
-           name="threeDSMethodData"
-           value="eyJ0aHJlZURTU2VydmVyVHJhbnNJRCI6IjEiLCJ0aHJlZURTTWV0aG9kTm90aWZpY2F0aW9uVVJMIjoidXJsMSJ9"
-    />
-</form>
-
-<script>
-    document.getElementById("rbkMoneyThreeDsMethodForm").submit()
-</script>
-</body>
-</html>
-```
-
-Обратите внимание, `3DSS` не проводит `3DS Method`, его проводит `3DS Requestor Website` напрямую с `ACS` (согласно спецификации `EMVCo`) для определения параметра `ThreeDsMethodCompletionInd`, который используется при проведении аутентификации. `3DS Method` можно провести без использования `3DSS`, самостоятельно собрав нужный шаблон, но `3DSS` может облегчить часть работы
-
-#### 3DS Authentication Flow
-
-Для прохождения аутентификации, запрос должен быть отправлен на `http://three-ds-server:8080/sdk`, `Content-Type=application/json`, `"messageType": "RBKMONEY_AUTHENTICATION_REQUEST"`
-
-Описание модели запроса при прохождении `3DS Authentification Flow` здесь — [`RBKMoneyAuthenticationRequest`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/RBKMoneyAuthenticationRequest.md)
-
-Актуальная модель в виде `java-файла` для получения `POST HTTP json-ответа` в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose) тут [RBKMoneyAuthenticationRequest.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationResponse.java)
-
-Актуальная модель ответа находятся по пути https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationResponse.java
-
-Ответ: 
-
-```json
-{
-  "messageType": "RBKMONEY_AUTHENTICATION_RESPONSE",
-  "messageVersion": "2.1.0",
-  "threeDSServerTransID": "5201a899-749a-4300-841b-24a870565b51",
-  "transStatus": "Y",
-  "dsReferenceNumber": "DSServerRef123456",
-  "acsReferenceNumber": "ACSRefNum1234",
-  "acsTransID": "77bbb905-1ac1-464d-9b5f-3f5bdc43ffe4",
-  "dsTransID": "1d042cf8-a44c-4111-a057-723b95e403d2",
-  "authenticationValue": "AAABBZEEBgAAAAAAAAQGAAAAAAA=",
-  "acsOperatorID": "00000014",
-  "eci": "05"
-}
-
-```
-
-Также может вместо ответа вернуться сообщение об ошибке с описанием
-
-Ошибка
-
-```json
-{
-  "messageType": "Erro",
-  "messageVersion": "2.1.0",
-  "errorCode": "404",
-  "errorComponent": "A",
-  "errorDescription": "Permanent system failure",
-  "errorDetail": "Database not available"
-}
-```
-
-Актуальная модель сообщения об ошибке находятся по пути https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/emvco/Erro.java
-
-В остальных случаях вернется соотвествующий HTTP код ошибки 
-
-## Предварительное конфигурирование окружения перед использованием `docker-compose.yml`
+## Конфигурация
 
 `3DSS` является клиентом для `DS`, и использует `DS` при выполенении запросов, обозначенных спецификацей `EMVCo` (ссылка ниже), поэтому для корректной работы `3DSS` необходима настройка обоих доменов
 

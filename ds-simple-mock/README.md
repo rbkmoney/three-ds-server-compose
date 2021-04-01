@@ -14,9 +14,9 @@ Cборка и запуск [сервиса](https://github.com/rbkmoney/three-d
 
 **Обращаем внимание**, для корректного демо [RBK.money 3D Secure Server](https://github.com/rbkmoney/three-ds-server) порядок запуска:
 
-1. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docker-compose.yml) [three-ds-server macroservice](https://github.com/rbkmoney/three-ds-server-compose) (сам макросервис 3DSS)
-2. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/docker-compose.yml) [ds-simple-mock](https://github.com/rbkmoney/three-ds-server-compose/tree/master/ds-simple-mock) (пример сервиса, который может быть использован в качестве заглушки для обработки [`PReq` && `AReq` запросов](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в DS от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose))
-3. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/docker-compose.yml) [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/tree/master/pseudo-schedulator) (пример сервиса, который может быть использован в качестве заглушки для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose))
+1. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docker-compose.yml) [three-ds-server macroservice](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md) (сам макросервис 3DSS)
+2. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/docker-compose.yml) [ds-simple-mock](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/README.md) (пример сервиса, который может быть использован в качестве заглушки для обработки [`PReq` && `AReq` запросов](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в DS от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md))
+3. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/docker-compose.yml) [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md) (пример сервиса, который может быть использован в качестве заглушки для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md))
 
 Сервис **НЕ** умеет отдавать отличающиеся `ARes` сообщения (например, в зависимости от приходящего `PAN` в запросе `AReq/ARes flow`), ответы, которые возвращает сервис **статичны**. В стандартной имплементации мока `DS` иммитация стандартной логики `DS` производится по передаваемому PAN в запросе, сервис генерирует успешные и неудачные `ARes` сообщения
 
@@ -26,7 +26,7 @@ Cборка и запуск [сервиса](https://github.com/rbkmoney/three-d
 
 На данный момент сервис поддерживает обработку 3 провайдеров `{providerId}` — `visa`, `mastercard`, `mir`
 
-`3DS Authentification Flow`
+Пример `3DS Authentification Flow`
 ```
 -> Request [POST] /{providerId}/DS2/authenticate
 {
@@ -42,7 +42,7 @@ Cборка и запуск [сервиса](https://github.com/rbkmoney/three-d
   ...
 }
 ```
-`3DS Preparation Flow`
+Пример `3DS Preparation Flow`
 ```
 -> Request [POST] /{providerId}/DS2/authenticate
 {
