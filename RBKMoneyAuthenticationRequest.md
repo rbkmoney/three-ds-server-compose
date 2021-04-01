@@ -2,6 +2,10 @@
 
 Актуальный `java-файл` модели для `POST HTTP json-запроса` тут [RBKMoneyAuthenticationRequest.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java)
 
+# Примеры
+
+Отдельно примеры запросов находятся в папке [samples](https://github.com/rbkmoney/three-ds-server-compose/tree/master/samples)
+
 # Описание полей
 
 | Data Element                                               | Field Name                              |
@@ -87,7 +91,3 @@
 | Whitelist Status                                           | whiteListStatus                         |
 | Whitelist Status Source                                    | whiteListStatusSource                   |
 | 3DS Requestor Challenge Indicator                          | threeDSRequestorChallengeInd            |
-
-# Примеры
-
-Отдельно примеры запросов находятся в папке [samples](https://github.com/rbkmoney/three-ds-server-compose/tree/master/samples)
