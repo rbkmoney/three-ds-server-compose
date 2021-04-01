@@ -120,8 +120,6 @@ Content-Type=application/json
 
 ### 3DS Authentication Flow
 
-Для прохождения аутентификации, запрос должен быть отправлен на `http://three-ds-server:8080/sdk`, `Content-Type=application/json`, `"messageType": "RBKMONEY_AUTHENTICATION_REQUEST"`
-
 Описание актуальной модели в виде `java-файла` для выполнения `POST HTTP json-запроса` при прохождении `3DS Authentification Flow` здесь — [`RBKMoneyAuthenticationRequest.md`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/RBKMoneyAuthenticationRequest.md)
 
 Актуальная модель в виде `java-файла` при получении `POST HTTP json-ответа` от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose) тут [RBKMoneyAuthenticationResponse.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationResponse.java)
@@ -172,11 +170,9 @@ Content-Type=application/json
   "errorDetail": "Database not available"
 }
 ```
-Актуальная модель в виде `java-файла` при получении `POST HTTP json-ответа` от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose) тут [Erro.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/emvco/Erro.java)
+Актуальная модель в виде `java-файла` при получении `POST HTTP json-ответа` от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose) тут [Erro.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/emvco/Erro.java) 
 
-В остальных случаях вернется соотвествующий HTTP код ошибки 
-
-## Предварительное конфигурирование окружения перед использованием `docker-compose.yml`
+## Конфигурация
 
 `3DSS` является клиентом для `DS`, и использует `DS` при выполенении запросов, обозначенных спецификацей `EMVCo` (ссылка ниже), поэтому для корректной работы `3DSS` необходима настройка обоих доменов
 
