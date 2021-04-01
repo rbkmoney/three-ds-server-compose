@@ -25,7 +25,6 @@ Cборка и запуск [сервиса](https://github.com/rbkmoney/three-d
 Пример 
 ```
 -> Request [POST] http://three-ds-server-storage:8022/three-ds-server-storage/rest/preparation-flow
-
 {
   "providerId": "visa",
   "messageVersion": "2.1.0"
@@ -42,7 +41,6 @@ HTTP 200 OK
 в данном случае крон устанавливает отправку запроса каждый час в ```**:00```
 
 ## Конфигурация
-
 
 При необходимости параметры сервиса можно редактировать в [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/docker-compose.yml) в [`services.schedulator.environment`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/docker-compose.yml#L10)
 
