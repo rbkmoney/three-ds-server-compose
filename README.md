@@ -26,80 +26,46 @@ docker-compose up -d
 
 ## Описание
 
-`3DSS` имплементирует требование по спецификации `EMVCo` к `3D Secure` взаимодействию, поддерживает только аутентификацию из вебсайта (`Browser-based`)
+`Макросервис 3DSS` имплементирует требование по спецификации `EMVCo` к `3D Secure` взаимодействию, поддерживает только аутентификацию из вебсайта (`Browser-based`)
 
 Подробнее — [здесь](https://github.com/rbkmoney/three-ds-server-compose/blob/master/3DSS%20detailed%20Description.md)
 
 ## Конфигурация
 
-`3DSS` является клиентом для `DS`, и использует `DS` при выполенении запросов, обозначенных спецификацей `EMVCo` (ссылка ниже), поэтому для корректной работы `3DSS` необходима настройка обоих доменов
+`Макросервис 3DSS` является клиентом для `DS`, и использует `DS` при выполенении запросов, обозначенных спецификацей `EMVCo` (ссылка ниже), поэтому для корректной работы `3DSS` необходима настройка обоих доменов (сервисов)
 
-### **(обязательно)** Настройка домена совместимости (домен `DS`)
+### Настройка домена совместимости (домен `DS`)
 
-При запуске `3DSS` попытается выполнить запрос на обновление карточных диапазонов `PReq/PRes flow` (описание ниже, п.3), поэтому перед запуском `3DSS` необходимо убедиться, что есть доступ к активному `DS`, который готов принимать HTTP запросы (т.е поднятый и работающий сервис)
+При запуске `макросервиса 3DSS` должен выполнить запрос на обновление карточных диапазонов `PReq/PRes flow`, поэтому перед запуском `макросервиса 3DSS` необходимо убедиться, что есть доступ к активному `DS`, который готов принимать HTTP запросы
 
-При отсутствии активного `DS` можно воспользоваться сервисом `ds-simple-mock`, который расположен в:
+В этом репозитории находится [ds-simple-mock](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/README.md), который может быть использован в заглушки для обработки [`PReq` && `AReq` запросов](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в `DS` от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md))
 
-```
-three-ds-server-compose  
-│
-└───ds-simple-mock
-    │
-    └───...
-```
+Подробнее — [здесь](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/README.md)
 
-#### (необязательно) Использование `ds-simple-mock` в качестве `DS`
+### Настройка планировщика расписания
 
-##### Описание
+При запуске `3DSS` **кто то** должен выполнить запрос на обновление карточных диапазонов `PReq/PRes flow`, поэтому перед запуском `макросервиса 3DSS` необходимо убедиться, что подобный сервис имплементирован и готов выполнять запросы по инициализации `PReq/PRes flow` в соотвествии с требованиями спецификации `EMVCo` (то есть минимальный интервал между запросами — 1 час, максимальный — 24 часа)
 
-`ds-simple-mock` имплементирует элементарную логику `DS` — принимает и отвечает сообщениями, обозначенных спецификацей `EMVCo`
+Более детальное описание процесса — [здесь](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) -> `5.6 PReq/PRes Message Handling Requirements (page 119)`
 
-На данный момент поддерживает 4 запроса:
-- POST /visa/DS2/authenticate {AReq} --> ARes
-- POST /visa/DS2/authenticate {PReq} --> PRes
-- POST /mastercard/DS2/authenticate {AReq} --> ARes
-- POST /mastercard/DS2/authenticate {PReq} --> PRes
+В этом репозитории находится [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md), который может быть использован в заглушки для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md))
 
-Сервис **НЕ** умеет отдавать отличающиеся ARes сообщения, ответы, которые возвращает сервис статичны. В стандартной имплементации мока `DS` иммитация стандартной логики `DS` производится по передаваемому PAN в запросе, сервис генерирует успешные и неудачные ARes сообщения
+### Настройка домена эквайера (домен `3DSS`)
 
-##### Использование
+На данный момент сервис поддерживает обработку 3 провайдеров `{providerId}` — `visa`, `mastercard`, `mir`
 
-Для использования сервиса необходимо собрать `docker image` с помощью `Dockerfile`, который расположен в корневой директории сервиса. Сам `build` сервиса проводится в `docker container` (см. `/three-ds-server-compose/ds-simple-mock/Dockerfile`), поэтому на локальном хосте не обязательно устанавливать необходимые зависимости для сервиса (`maven`, `openjdk11` и тд)
+1) Указать в директории [cert](https://github.com/rbkmoney/three-ds-server-compose/tree/master/three-ds-server/cert) ключи `mir.p12`, `visa.p12`, `mastercard.p12`, которые используются `3DSS` для соединения с `DS` (для примера в директории нахадится [тестовый сертификат](https://github.com/rbkmoney/three-ds-server-compose/blob/master/three-ds-server/cert/test.p12))
 
-Собрать и запустить сервис:
-
-```bash
-cd ds-simple-mock/
-docker-compose up -d
-```
-
-![Demo1](./readme-resources/1_full.gif?raw=true)
-
-После запуска сервис висит на `http://localhost:8081`
-
-### **(обязательно)** Настройка домена эквайера (домен `3DSS`)
-
-#### Опции для настройки сервиса `3DSS` в `docker-compose.yml`
-
-`3DSS` может быть скофигурирован для работы с: 
-- `DS visa`
-- `DS mastercard`
-- одновременно со всеми `DS`
-
-1. **(обязательно)** Указать в директории `/three-ds-server-compose/three-ds-server/cert` ключи `visa.p12`, `mastercard.p12`, которые используются `3DSS` для соединения с `DS`
-
-Ключи будут использоваться параметрами:
+Ключи будут использоваться параметром:
 
 ```yaml
-client.ds.ssl.visa.trust-store: file:/opt/three-ds-server/cert/visa.p12
-client.ds.ssl.mastercard.trust-store: file:/opt/three-ds-server/cert/mastercard.p12
+client.ds.ssl.{providerId}.trust-store: file:/opt/three-ds-server/cert/test.p12
 ```
 
 Указать пароли для ключей:
  
 ```yaml
-client.ds.ssl.visa.trust-store-password: {{password}}
-client.ds.ssl.mastercard.trust-store-password: {{password}}
+client.ds.ssl.{providerId}.trust-store-password: {{password}}
 ```
 
 Изменить (при необходимости) volume
@@ -109,70 +75,26 @@ volumes:
   - ./three-ds-server/cert:/opt/three-ds-server/cert/:ro
 ```
 
-2 **(обязательно)** Указать адреса `DS visa` && `DS mastercard`
+2) Указать адрес `DS` для каждого `{providerId}`
 
 ```yaml
-environment.visa.ds-url: http://host.docker.internal:8081/visa/DS2/authenticate
-environment.mastercard.ds-url: http://host.docker.internal:8081/mastercard/DS2/authenticate
+environment.{providerId}.ds-url: http://ds:8081/{providerId}/DS2/authenticate
 ```
 
-При таких значениях параметров `ds-url` `3DSS` будет обращаться к `http://localhost:8081` как к сервису `DS` 
+3) Настройка расписания для обновления карточных диапазонов [`3DS Preparation Flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) 
 
-3 (не обязательно) Настройка расписания для обновления карточных диапазонов (`PReq/PRes flow`)
+В этом репозитории находится [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md), который может быть использован в заглушки для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md)) 
 
-Описание `PReq/PRes flow` можно найти в открытой спецификации `EMVCo`:
+**Лучше пишите собственную импементацию**
 
-```
-three-ds-server-compose  
-│
-└───docs
-    │
-    └───EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf
-        │
-        └───5.6 PReq/PRes Message Handling Requirements (page 119)
-```
+Поэтому стандартная имплементация через [rbkmoney-schedulator](https://github.com/rbkmoney/schedulator) **выключена** (параметр `rbkmoney-preparation-flow.scheduler.enabled: "false"`) (данный сервис тянет за собой каскад других rbkmoney сервисов, поэтому это выходит за рамки данной демонстрации)
 
-Выключить обновление карточных диапазонов:
+## Тестирование `3DS Authentification Flow`
 
-```yaml
-rbkmoney-preparation-flow.scheduler.enabled: "false" ("true" по умолчанию) 
-```
+Для теста в `3DSS` посылаются 2 запроса, у одного `"acctNumber": "2201010000000000"`, у второго `"acctNumber": "4012000000001001"` 
 
-Задать расписание обновления карточных диапазонов:
+В данном тесте в качестве сервиса `DS` используется собственный мок-сервис `ds-simple-mock`
 
-```yaml
-rbkmoney-preparation-flow.scheduler.schedule.cron: "0 0 * * * ?" (обновлять каждый час — по умолчанию) 
-```
-
-Выключить обновление карточных диапазонов для определеннного `DS`:
-
-```yaml
-rbkmoney-preparation-flow.scheduler.ds-provider.mastercard.enabled: "false" ("true" по умолчанию) 
-rbkmoney-preparation-flow.scheduler.ds-provider.visa.enabled: "true" ("true" по умолчанию) 
-
-```
-
-## Запуск `3DSS` с использованием `docker-compose.yml`
-
-Собрать и запустить сервис:
-
-```bash
-docker-compose up -d
-```
-
-![Demo2](./readme-resources/2_full.gif?raw=true)
-
-После запуска сервис висит на `http://localhost:8080`
-
-## Тестирование `3DSS`
-
-Для проведения Authentification Flow (в соотвествии с спецификацией `EMVCo`) в `3DSS` отправляется POST HTTP запрос на `http://three-ds-server:8080/sdk`:
-- `Content-Type=application/json`
-- `"messageType": "RBKMONEY_AUTHENTICATION_REQUEST"`
-- остальные параметры JSON должны быть заполнены в соотвествии с структурой https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java
-
-Для теста в `3DSS` посылаются 2 запроса, у одного `"acctNumber": "2201010000000000"`, у второго `"acctNumber": "4012000000001001"`. В данном тесте в качестве сервиса `DS` используется собственный мок-сервис `ds-simple-mock` (описание см. выше)
-
-`3DSS` (с помощью мок-сервиса `DS`) настроен так, что `"acctNumber": "2201010000000000"` ассоциирует с `mastercard` , `"acctNumber": "4012000000001001"` ассоциирует с `visa`, и отправляет запрос в соотвествующий (`mastercard`/`visa`) `DS` (`PReq/PRes flow`)
+`3DSS` (с помощью мок-сервиса `DS`) настроен так, что `"acctNumber": "2201010000000000"` ассоциирует с `mastercard` , `"acctNumber": "4012000000001001"` ассоциирует с `visa`, и отправляет запрос в соотвествующий (`mastercard`/`visa`) `DS` (`PReq/PRes flow`)  (`mir` также поддерживается для запросов)
 
 ![Demo3](./readme-resources/test.gif?raw=true)
