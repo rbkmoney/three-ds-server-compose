@@ -34,7 +34,7 @@ docker-compose up -d
 
 Перед прохождением `3DS Authentification Flow` `3DS Requestor` должен версионировать `PAN` плательщика. Результат версионирования подтверждает, что данный `PAN` является участником `3DS 2.0` и имеет право пройти аутентитфикацию `3DS Authentification Flow`, в протитвном случае результатом версионирования будет `HTTP 404 NOT FOUND`
 
-Пример
+Пример прохождения версионирования
 ```
 -> Request [POST] http://three-ds-server:8080/versioning
 Content-Type=application/json
@@ -53,6 +53,7 @@ Content-Type=application/json
   "threeDsMethodUrl": "url"
 }
 ```
+Пример ошибки версионирования
 ```
 -> Request [POST] http://three-ds-server:8080/versioning
 Content-Type=application/json
@@ -117,19 +118,25 @@ Content-Type=application/json
 
 `3DS Method` можно провести без использования `3DSS`, самостоятельно собрав подобный шаблон `htmlThreeDsMethodData`, описанный здесь
 
-#### 3DS Authentication Flow
+### 3DS Authentication Flow
 
 Для прохождения аутентификации, запрос должен быть отправлен на `http://three-ds-server:8080/sdk`, `Content-Type=application/json`, `"messageType": "RBKMONEY_AUTHENTICATION_REQUEST"`
 
-Описание модели запроса при прохождении `3DS Authentification Flow` здесь — [`RBKMoneyAuthenticationRequest`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/RBKMoneyAuthenticationRequest.md)
+Описание актуальной модели в виде `java-файла` для выполнения `POST HTTP json-запроса` при прохождении `3DS Authentification Flow` здесь — [`RBKMoneyAuthenticationRequest.md`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/RBKMoneyAuthenticationRequest.md)
 
-Актуальная модель в виде `java-файла` для получения `POST HTTP json-ответа` в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose) тут [RBKMoneyAuthenticationRequest.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationResponse.java)
+Актуальная модель в виде `java-файла` при получении `POST HTTP json-ответа` от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose) тут [RBKMoneyAuthenticationResponse.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationResponse.java)
 
-Актуальная модель ответа находятся по пути https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationResponse.java
+Пример успешного прохождения `3DS Authentification Flow`
+```
+-> Request [POST] http://three-ds-server:8080/sdk
+Content-Type=application/json
+{
+  "messageType": "RBKMONEY_AUTHENTICATION_REQUEST",
+  "messageVersion": "2.1.0",
+  ...
+}
 
-Ответ: 
-
-```json
+<- Response [POST] http://three-ds-server:8080/sdk
 {
   "messageType": "RBKMONEY_AUTHENTICATION_RESPONSE",
   "messageVersion": "2.1.0",
@@ -143,14 +150,19 @@ Content-Type=application/json
   "acsOperatorID": "00000014",
   "eci": "05"
 }
-
 ```
 
-Также может вместо ответа вернуться сообщение об ошибке с описанием
+Пример неудачного прохождения `3DS Authentification Flow`
+```
+-> Request [POST] http://three-ds-server:8080/sdk
+Content-Type=application/json
+{
+  "messageType": "RBKMONEY_AUTHENTICATION_REQUEST",
+  "messageVersion": "2.1.0",
+  ...
+}
 
-Ошибка
-
-```json
+<- Response [POST] http://three-ds-server:8080/sdk
 {
   "messageType": "Erro",
   "messageVersion": "2.1.0",
@@ -160,8 +172,7 @@ Content-Type=application/json
   "errorDetail": "Database not available"
 }
 ```
-
-Актуальная модель сообщения об ошибке находятся по пути https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/emvco/Erro.java
+Актуальная модель в виде `java-файла` при получении `POST HTTP json-ответа` от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose) тут [Erro.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/emvco/Erro.java)
 
 В остальных случаях вернется соотвествующий HTTP код ошибки 
 
