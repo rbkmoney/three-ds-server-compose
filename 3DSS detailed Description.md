@@ -6,16 +6,12 @@
 
 <a name="desc"></a>
 # Описание
-
-`3DSS` имплементирует требование по спецификации `EMVCo` к `3D Secure` взаимодействию, поддерживает только аутентификацию из вебсайта (`Browser-based`)
-
+`3DSS` имплементирует требование по спецификации `EMVCo` к `3D Secure` взаимодействию, поддерживает только аутентификацию из вебсайта (`Browser-based`)  
 ![alt text](./readme-resources/flow.jpg "3D Secure Processing Flow - Browser-based")
 
 <a name="version"></a>
 # 3DS Versioning
-
-Перед прохождением `3DS Authentification Flow` `3DS Requestor` должен версионировать `PAN` плательщика. Результат версионирования подтверждает, что данный `PAN` является участником `3DS 2.0` и имеет право пройти аутентитфикацию `3DS Authentification Flow`, в протитвном случае результатом версионирования будет `HTTP 404 NOT FOUND`
-
+Перед прохождением `3DS Authentification Flow` `3DS Requestor` должен версионировать `PAN` плательщика. Результат версионирования подтверждает, что данный `PAN` является участником `3DS 2.0` и имеет право пройти аутентитфикацию `3DS Authentification Flow`, в протитвном случае результатом версионирования будет `HTTP 404 NOT FOUND`  
 Пример прохождения версионирования
 ```
 -> Request [POST] http://three-ds-server:8080/versioning
@@ -49,9 +45,7 @@ HTTP 404 NOT FOUND
 
 <a name="method"></a>
 # 3DS Method
-
-Дополнительный эндпоинт, который не обязателен для использования в `3DS Requestor`, используется для сборки HTML шаблона, который необходим при проведении `3DS Method` между `3DS Requestor` и [`ACS`]((https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf))
-
+Дополнительный эндпоинт, который не обязателен для использования в `3DS Requestor`, используется для сборки HTML шаблона, который необходим при проведении `3DS Method` между `3DS Requestor` и [`ACS`]((https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf))  
 Пример
 ```
 -> Request [POST] http://three-ds-server:8080/three-ds-method
@@ -70,8 +64,7 @@ Content-Type=application/json
   "threeDsServerTransId": "1"
 }
 ```
-Где `htmlThreeDsMethodData`
- 
+Где `htmlThreeDsMethodData`:
 ```html
 <!DOCTYPE html>
 <html>
@@ -94,22 +87,15 @@ Content-Type=application/json
 </body>
 </html>
 ```
-
-**Обратите внимание**, `3DSS` не проводит `3DS Method`, его проводит `3DS Requestor` напрямую с [`ACS`]((https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf))
-
-Конечным результатом проведения `3DS Method` является определение параметра [`ThreeDsMethodCompletionInd`](https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java#L46), который используется при проведении аутентификации `3DS Authentification Flow`. 
-
-`3DS Method` можно провести без использования `3DSS`, самостоятельно собрав подобный шаблон `htmlThreeDsMethodData`, описанный здесь
+**Обратите внимание**, `3DSS` не проводит `3DS Method`, его проводит `3DS Requestor` напрямую с [`ACS`]((https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf))  
+Конечным результатом проведения `3DS Method` является определение параметра [`ThreeDsMethodCompletionInd`](https://github.com/rbkmoney/three-ds-server-domain-lib/blob/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java#L46), который используется при проведении аутентификации `3DS Authentification Flow`  
+> `3DS Method` можно провести без использования `3DSS`, самостоятельно собрав подобный шаблон `htmlThreeDsMethodData`, описанный в этом документе
 
 <a name="auth"></a>
 # 3DS Authentication Flow
-
-Основной эндпоинт для взаимодействия с 3дс сервером, служит для прохождения аутентификации.
-
-Описание актуальной модели в виде `java-файла` для выполнения `POST HTTP json-запроса` при прохождении `3DS Authentification Flow` здесь — [`RBKMoneyAuthenticationRequest.md`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/RBKMoneyAuthenticationRequest.md)
-
-Актуальная модель в виде `java-файла` при получении `POST HTTP json-ответа` от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose) тут [RBKMoneyAuthenticationResponse.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationResponse.java)
-
+Основной эндпоинт для взаимодействия с 3дс сервером, служит для прохождения аутентификации  
+Описание актуальной модели в виде `java-файла` для выполнения `POST HTTP json-запроса` при прохождении `3DS Authentification Flow` — [ЗДЕСЬ `RBKMoneyAuthenticationRequest.md`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/RBKMoneyAuthenticationRequest.md)  
+Актуальная модель в виде `java-файла` при получении `POST HTTP json-ответа` от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose) — [ЗДЕСЬ RBKMoneyAuthenticationResponse.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationResponse.java)  
 Пример успешного прохождения `3DS Authentification Flow`
 ```
 -> Request [POST] http://three-ds-server:8080/sdk
@@ -135,7 +121,6 @@ Content-Type=application/json
   "eci": "05"
 }
 ```
-
 Пример неудачного прохождения `3DS Authentification Flow`
 ```
 -> Request [POST] http://three-ds-server:8080/sdk
@@ -160,9 +145,7 @@ Content-Type=application/json
 
 <a name="result"></a>
 # Result
-
-Запрос позволяет `3DS Requestor` получить результат аутентификации `3D Secure` при прохождении `Challenge flow` для получения сгенерированного значения `authenticationValue` и `eci` после того, как `3DS Requestor` получил успешные `CRes` от `ACS`, в протитвном случае результатом аутентификации `3D Secure` будет `HTTP 404 NOT FOUND`
-
+Запрос позволяет `3DS Requestor` получить результат аутентификации `3D Secure` при прохождении `Challenge flow` для получения сгенерированного значения `authenticationValue` и `eci` после того, как `3DS Requestor` получил успешные `CRes` от `ACS`, в протитвном случае результатом аутентификации `3D Secure` будет `HTTP 404 NOT FOUND`  
 Пример успешного получения результата `3D Secure`
 ```
 -> Request [POST] http://three-ds-server:8080/result
@@ -188,4 +171,3 @@ Content-Type=application/json
 <- Response [POST] http://three-ds-server:8080/result
 HTTP 404 NOT FOUND
 ```
-
