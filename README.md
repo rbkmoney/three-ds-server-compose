@@ -93,9 +93,8 @@ environment.{providerId}.ds-url: http://ds:8081/{providerId}/DS2/authenticate
 
 Подробнее — [ЗДЕСЬ](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md)
 
-**Лучше пишите собственную импементацию**
-
-Cтандартная имплементация через [rbkmoney-schedulator](https://github.com/rbkmoney/schedulator) **выключена** (параметр `rbkmoney-preparation-flow.scheduler.enabled: "false"`) (данный сервис тянет за собой каскад других rbkmoney сервисов, поэтому это выходит за рамки данной демонстрации)
+>> **Лучше пишите собственную импементацию**  
+>> Cтандартная имплементация через [rbkmoney-schedulator](https://github.com/rbkmoney/schedulator) **выключена** (параметр `rbkmoney-preparation-flow.scheduler.enabled: "false"`) (данный сервис тянет за собой каскад других rbkmoney сервисов, поэтому это выходит за рамки данной демонстрации)
 
 ## Тестирование `3DS Authentification Flow`
 
