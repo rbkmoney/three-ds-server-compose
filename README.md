@@ -40,8 +40,7 @@ docker-compose up -d
 
 ### Настройка домена совместимости (домен `DS`)
 
-При запуске `макросервиса 3DSS` должен выполнить запрос на обновление карточных диапазонов `PReq/PRes flow`, поэтому перед запуском `макросервиса 3DSS` необходимо убедиться, что есть доступ к активному `DS`, который готов принимать HTTP запросы
-
+При запуске `макросервиса 3DSS` должен выполнить запрос на обновление карточных диапазонов `PReq/PRes flow`, поэтому перед запуском `макросервиса 3DSS` необходимо убедиться, что есть доступ к активному `DS`, который готов принимать HTTP запросы  
 В этом репозитории находится [ds-simple-mock](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/README.md), который может быть использован в качестве заглушки для обработки [`PReq` && `AReq` запросов](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в `DS` от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md))
 
 Подробнее — [ЗДЕСЬ](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/README.md)
@@ -93,8 +92,8 @@ environment.{providerId}.ds-url: http://ds:8081/{providerId}/DS2/authenticate
 
 Подробнее — [ЗДЕСЬ](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md)
 
->> **Лучше пишите собственную импементацию**  
->> Cтандартная имплементация через [rbkmoney-schedulator](https://github.com/rbkmoney/schedulator) **выключена** (параметр `rbkmoney-preparation-flow.scheduler.enabled: "false"`) (данный сервис тянет за собой каскад других rbkmoney сервисов, поэтому это выходит за рамки данной демонстрации)
+> **Лучше пишите собственную импементацию**  
+> Cтандартная имплементация через [rbkmoney-schedulator](https://github.com/rbkmoney/schedulator) **выключена** (параметр `rbkmoney-preparation-flow.scheduler.enabled: "false"`) (данный сервис тянет за собой каскад других rbkmoney сервисов, поэтому это выходит за рамки данной демонстрации)
 
 ## Тестирование `3DS Authentification Flow`
 
