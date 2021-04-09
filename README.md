@@ -22,9 +22,9 @@ docker-compose up -d
 
 1. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docker-compose.yml) [three-ds-server macroservice](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md) (сам макросервис 3DSS)
 2. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/docker-compose.yml) [ds-simple-mock](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/README.md) (пример сервиса, который может быть использован в качестве заглушки для обработки [`PReq` && `AReq` запросов](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в DS от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md))
-3. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/docker-compose.yml) [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md) (пример сервиса, который может быть использован в качестве заглушки для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md))
+3. [`docker-compose.yml`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/docker-compose.yml) [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md) (пример сервиса, который может быть использован в качестве заглушке для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md))
 
-Если запуск будет произведен корректно, то по задумке автора в качестве финального результата в логах должны быть записи об успешной записи карточных диапазонов в хранилише
+Если запуск будет произведен корректно, то по задумке автора в качестве финального результата в логах должны быть записи об успешной записи карточных диапазонов в хранилище
 
 ![alt text](./readme-resources/result.jpg "Result")
 
@@ -32,7 +32,7 @@ docker-compose up -d
 
 `Макросервис 3DSS` имплементирует требование по спецификации `EMVCo` к `3D Secure` взаимодействию, поддерживает только аутентификацию из вебсайта (`Browser-based`)
 
-Подробнее — [здесь](https://github.com/rbkmoney/three-ds-server-compose/blob/master/3DSS%20detailed%20Description.md)
+Подробнее — [ЗДЕСЬ](https://github.com/rbkmoney/three-ds-server-compose/blob/master/3DSS%20detailed%20Description.md)
 
 ## Конфигурация
 
@@ -42,19 +42,19 @@ docker-compose up -d
 
 При запуске `макросервиса 3DSS` должен выполнить запрос на обновление карточных диапазонов `PReq/PRes flow`, поэтому перед запуском `макросервиса 3DSS` необходимо убедиться, что есть доступ к активному `DS`, который готов принимать HTTP запросы
 
-В этом репозитории находится [ds-simple-mock](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/README.md), который может быть использован в заглушки для обработки [`PReq` && `AReq` запросов](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в `DS` от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md))
+В этом репозитории находится [ds-simple-mock](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/README.md), который может быть использован в заглушке для обработки [`PReq` && `AReq` запросов](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в `DS` от [`макросервиса 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md))
 
-Подробнее — [здесь](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/README.md)
+Подробнее — [ЗДЕСЬ](https://github.com/rbkmoney/three-ds-server-compose/blob/master/ds-simple-mock/README.md)
 
 ### Настройка планировщика расписания
 
 При запуске `3DSS` **кто то** должен выполнить запрос на обновление карточных диапазонов `PReq/PRes flow`, поэтому перед запуском `макросервиса 3DSS` необходимо убедиться, что подобный сервис имплементирован и готов выполнять запросы по инициализации `PReq/PRes flow` в соотвествии с требованиями спецификации `EMVCo` (то есть минимальный интервал между запросами — 1 час, максимальный — 24 часа)
 
-Более детальное описание процесса — [здесь](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) -> `5.6 PReq/PRes Message Handling Requirements (page 119)`
+Более детальное описание процесса — [ЗДЕСЬ](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) -> `5.6 PReq/PRes Message Handling Requirements (page 119)`
 
-В этом репозитории находится [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md), который может быть использован в заглушки для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md)
+В этом репозитории находится [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md), который может быть использован в заглушке для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md)
 
-Подробнее — [здесь](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md)
+Подробнее — [ЗДЕСЬ](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md)
 
 ### Настройка домена эквайера (домен `3DSS`)
 
@@ -89,9 +89,9 @@ environment.{providerId}.ds-url: http://ds:8081/{providerId}/DS2/authenticate
 
 3) Настройка расписания для обновления карточных диапазонов [`3DS Preparation Flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) 
 
-В этом репозитории находится [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md), который может быть использован в заглушки для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md)
+В этом репозитории находится [pseudo-schedulator](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md), который может быть использован в заглушке для инциализации [`PReq/PRes flow`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/docs/EMVCo_Protocol_and_Core_Functions_Specification_v2.2.0.pdf) в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose/blob/master/README.md)
 
-Подробнее — [здесь](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md)
+Подробнее — [ЗДЕСЬ](https://github.com/rbkmoney/three-ds-server-compose/blob/master/pseudo-schedulator/README.md)
 
 **Лучше пишите собственную импементацию**
 
