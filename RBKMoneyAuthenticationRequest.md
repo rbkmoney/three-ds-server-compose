@@ -1,13 +1,8 @@
 # RBKMoneyAuthenticationRequest
-
-Актуальная модель в виде `java-файла` для выполнения `POST HTTP json-запроса` в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose)) тут [RBKMoneyAuthenticationRequest.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java)
-
+Актуальная модель в виде `java-файла` для выполнения `POST HTTP json-запроса` в [`макросервис 3DSS`](https://github.com/rbkmoney/three-ds-server-compose)) — [ЗДЕСЬ RBKMoneyAuthenticationRequest.java](https://raw.githubusercontent.com/rbkmoney/three-ds-server-domain-lib/master/src/main/java/com/rbkmoney/threeds/server/domain/root/rbkmoney/RBKMoneyAuthenticationRequest.java)
 # Примеры
-
 Отдельно примеры запросов находятся в папке [samples](https://github.com/rbkmoney/three-ds-server-compose/tree/master/samples)
-
 # Описание полей
-
 | Data Element                                               | Field Name                              |
 |------------------------------------------------------------|-----------------------------------------|
 | 3DS Method Completion Indicator                            | threeDSCompInd                          |
